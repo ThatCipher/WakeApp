@@ -1,0 +1,7 @@
+{
+  "name": "WakeApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
