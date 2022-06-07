@@ -1,0 +1,6 @@
+@import "/src/app/utils/variables";
+
+.window-header{
+    padding: $window-padding;
+    border-bottom: 1px solid $border-color;
+}

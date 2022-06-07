@@ -1,0 +1,11 @@
+@import "/src/app/utils/_variables";
+
+.window{
+    background-color: $window-color;
+    border: 1px solid $border-color;
+    border-radius: 5px;
+
+    .window-body{
+        padding: $window-padding;
+    }
+}
