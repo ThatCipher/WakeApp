@@ -27,6 +27,10 @@
 
 @import "./app/utils/variables";
 
+ion-content{
+    --ion-background-color: rgb(240, 240, 240);
+}
+
 
 h1, h2, h3, h4, h5, h6, p{
     padding: 0;
@@ -35,11 +39,12 @@ h1, h2, h3, h4, h5, h6, p{
 
 h4, h5, h6{
     color: rgb(100, 100, 100);
+    font-size: 2em;
 }
 
 p{
     color: rgb(90, 90, 90);
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 hr{

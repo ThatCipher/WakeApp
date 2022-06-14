@@ -1,0 +1,48 @@
+<form [formGroup]="settingsForm" (ngSubmit)="onSubmit()">
+
+    <div id="settings">
+
+        <!-- Time to arrive -->
+        <label>
+            <span>Ankunftszeit</span>
+            <input type="time" formControlName="arrivalTime">
+        </label>
+
+        <!-- Time to prepare -->
+        <label id="timeToPrepare">
+            <span>Zeit zum Fertigmachen</span>
+            <input type="number" formControlName="timeToPrepare">
+            <input type="text" value="min" disabled>
+        </label>
+
+        <!-- Starting Location -->
+        <label class="gps">
+            <span>Wohnort</span>
+            <input type="text" formControlName="startLocation">
+        </label>
+
+        <!-- Destination -->
+        <label class="gps">
+            <span>Zielort</span>
+            <input type="text" formControlName="destination">
+        </label>
+
+    </div>
+
+
+
+    <!-- Travel Method -->
+    <div id="travelmethod">
+        <label>
+            <input type="radio" [value]="TravelMethods.opnv" formControlName="travelBy">
+            <span>ÖPNV</span>
+        </label>
+        <label>
+            <input type="radio" [value]="TravelMethods.car" formControlName="travelBy">
+            <span>Auto</span>
+        </label>
+    </div>
+
+
+    <button type="submit">OK</button>
+</form>
