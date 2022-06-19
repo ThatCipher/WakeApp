@@ -9,6 +9,9 @@ import { ComponentsModule } from '../components/components.module';
 import { HomePage } from './home/home.page';
 import { HomeSettingsComponent } from './home/components/home-settings/home-settings.component';
 
+// Services
+import { TimeService } from '../services/time.service';
+
 
 @NgModule({
   declarations: [HomePage, HomeSettingsComponent],
@@ -19,6 +22,8 @@ import { HomeSettingsComponent } from './home/components/home-settings/home-sett
     ViewRoutingModule,
     ComponentsModule,
     ReactiveFormsModule
+  ],
+  providers: [
   ]
 })
 export class ViewModule { }

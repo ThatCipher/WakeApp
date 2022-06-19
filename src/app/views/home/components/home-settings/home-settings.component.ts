@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TravelMethods } from 'src/app/utils/enums/TravelMethods';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ISetting } from 'src/app/utils/interfaces/ISetting'
+import { SaveService } from 'src/app/services/save.service';
+import { TimeService } from 'src/app/services/time.service';
 
 @Component({
   selector: 'app-home-settings',
@@ -20,26 +22,29 @@ export class HomeSettingsComponent implements OnInit {
     travelBy      : new FormControl('')
   });
 
-  constructor() { }
+  constructor(
+    private saveService: SaveService,
+    private timeService: TimeService
+    ) { }
 
   ngOnInit(): void {
-    this.setCurrentTime();
+    this.loadData();
   }
 
-  /**
-   * Gets current Time and converts it into a string.
-   */
-  setCurrentTime(): void{
-    let currentDate: Date = new Date();
-    let timeString: string = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-    this.settingsForm.patchValue({
-      arrivalTime   : timeString,
-      timeToPrepare : 0
-    });
+  async loadData(): Promise<void>{    
+    let savedObject: ISetting = await this.saveService.loadAll();
+    this.settingsForm.setValue({
+      arrivalTime   : this.timeService.getCurrentTime(new Date),
+      timeToPrepare : savedObject.timeToPrepare || 0,
+      startLocation : savedObject.gps.start,
+      destination   : savedObject.gps.destination,
+      travelBy      : savedObject.travelBy || 0
+    })
+
   }
 
-  onSubmit(): void{
-    let settingsObject: ISetting = this.generateSettignsObject();
+  async onSubmit(): Promise<void>{
+    let settingsObject: ISetting = await this.generateSettignsObject();
     console.log(settingsObject);
   }
 
@@ -52,7 +57,7 @@ export class HomeSettingsComponent implements OnInit {
     let values = this.settingsForm.value;
 
     let object: ISetting = {
-      arrivalTime: this.convertToDate(values.arrivalTime),
+      arrivalTime: this.timeService.convertToDate(values.arrivalTime),
       timeToPrepare : values.timeToPrepare,
       gps           : {
         start       : values.startLocation,
@@ -62,24 +67,6 @@ export class HomeSettingsComponent implements OnInit {
     }
 
     return object;
-  }
-
-  /**
-   * Converts a String displaying time to a Date Object
-   * @param timeString string - Time in string format hh:mm
-   * @returns Date object
-   */
-  convertToDate(timeString: string): Date{
-
-    // Converts string into array split by hour and minute [h, m]
-    let timeArray: any = timeString.split(':');
-    timeArray.forEach(element => element = parseInt(element));
-
-    // Creates the Date object with given time
-    let dateObject: Date = new Date();
-    dateObject.setHours(timeArray[0], timeArray[1]);
-
-    return dateObject;
   }
 
 }
