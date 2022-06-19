@@ -1,48 +1,74 @@
 <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()">
-
-    <div id="settings">
-
-        <!-- Time to arrive -->
+    
+    <!-- Time to arrive -->
+    <div class="input">
         <label>
             <span>Ankunftszeit</span>
             <input type="time" formControlName="arrivalTime">
         </label>
-
-        <!-- Time to prepare -->
+    </div>
+    
+    <!-- Time to prepare -->
+    <div class="input">
         <label id="timeToPrepare">
             <span>Zeit zum Fertigmachen</span>
-            <input type="number" formControlName="timeToPrepare">
+            <input type="number" formControlName="timeToPrepare" min="0" max="180">
             <input type="text" value="min" disabled>
         </label>
+    </div>
+    
+    <div class="checkbox">
+        <label>
+            <span></span>
+            <input type="checkbox" name="useGPS" (change)="changeGPSView()">
+            <span>GPS Benutzen</span>
+        </label>
+    </div>
 
+    <div class="animateable" [ngClass]="{'slideIn': !useGPS, 'slideOut': useGPS}" *ngIf="!isVisible">
+        <div class="input">
+            <label id="timeToTravel">
+                <span>Fahrzeit</span>
+                <input type="number" formControlName="timeToTravel" min="0" max="180">
+                <input type="text" value="min" disabled>
+            </label>
+        </div>
+        <button type="button" class="maps" (click)="openMaps()" >Google Maps</button>
+    </div>
+    
+    <!-- GPS Stuff -->
+    <div [ngClass]="{'slideIn': useGPS, 'slideOut': !useGPS}" class="animateable" *ngIf="isVisible">
         <!-- Starting Location -->
-        <label class="gps">
-            <span>Startort</span>
-            <input type="text" formControlName="startLocation" placeholder="Start">
-        </label>
-
+        <div class="input">
+            <label class="gps">
+                <span>Startort</span>
+                <input type="text" formControlName="startLocation" placeholder="Start">
+            </label>
+        </div>
+        
         <!-- Destination -->
-        <label class="gps">
-            <span>Zielort</span>
-            <input type="text" formControlName="destination" placeholder="Ziel">
-        </label>
-
+        <div class="input">
+            <label class="gps">
+                <span>Zielort</span>
+                <input type="text" formControlName="destination" placeholder="Ziel">
+            </label>
+        </div>
+        
+        <!-- Travel Method -->
+        <div class="radio">
+            <label>
+                <input type="radio" [value]="TravelMethods.opnv" formControlName="travelBy">
+                <span>ÖPNV</span>
+            </label>
+            <label>
+                <input type="radio" [value]="TravelMethods.car" formControlName="travelBy">
+                <span>Auto</span>
+            </label>
+        </div>
     </div>
-
-
-
-    <!-- Travel Method -->
-    <div id="travelmethod">
-        <label>
-            <input type="radio" [value]="TravelMethods.opnv" formControlName="travelBy">
-            <span>ÖPNV</span>
-        </label>
-        <label>
-            <input type="radio" [value]="TravelMethods.car" formControlName="travelBy">
-            <span>Auto</span>
-        </label>
-    </div>
-
-
+    
+    
+    
+    
     <button type="submit">OK</button>
 </form>

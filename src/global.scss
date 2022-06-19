@@ -27,6 +27,11 @@
 
 @import "./app/utils/variables";
 
+@font-face {
+    font-family: 'digital-clock';
+    src: url('./assets/fonts/digital-7.ttf');
+}
+
 ion-content{
     --ion-background-color: rgb(240, 240, 240);
 }

@@ -15,13 +15,29 @@
           <app-home-settings></app-home-settings>
         </app-window>
 
-        <hr>
-
-        <app-window title="Ergebnis">
+        <div class="note">
           <p>
-            Sie sollten Ihren Wecker auf die folgende Zeit stellen :
+            Leider funktioniert die dynamische Zeiterfassung durch GPS momentan nicht. <br>
+            Bitte benutzen Sie das Feld "Fahrtzeit".
           </p>
-        </app-window>
+        </div>
+
+
+        <ng-container *ngIf="timeService.showResult">
+          <hr>
+
+          <div [ngClass]="{'slideIn': timeService.showResult}">
+            <app-window title="Ergebnis" id="result" >
+              <p>
+                Sie sollten Ihren Wecker auf die folgende Zeit stellen :
+              </p>
+              <app-clock  [time]="timeService.timeData.wakeUpTime" id="alarm"></app-clock>
+            </app-window>
+          </div>
+
+        </ng-container>
+
+
   
     </div>
   

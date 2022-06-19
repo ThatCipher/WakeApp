@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { TimeService } from 'src/app/services/time.service';
 import { ISetting } from 'src/app/utils/interfaces/ISetting';
+import { ITimeData } from 'src/app/utils/interfaces/ITimeData';
 
 @Component({
   templateUrl: './home.page.html',
@@ -7,19 +9,13 @@ import { ISetting } from 'src/app/utils/interfaces/ISetting';
 })
 export class HomePage implements OnInit {
 
-  settings: ISetting = {
-    arrivalTime   : undefined,
-    timeToPrepare : undefined,
-    gps           : {
-      start       : undefined,
-      destination : undefined
-    },
-    travelBy      : undefined
-  }
+  timeData: ITimeData;
+  displayResult: boolean = false;
 
-  constructor() { }
+  constructor(public timeService: TimeService) { }
 
   ngOnInit(): void {
+    this.timeData = this.timeService.timeData;
   }
 
 }

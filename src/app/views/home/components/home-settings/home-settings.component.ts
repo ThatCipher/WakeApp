@@ -19,8 +19,12 @@ export class HomeSettingsComponent implements OnInit {
     timeToPrepare : new FormControl(''),
     startLocation : new FormControl(''),
     destination   : new FormControl(''),
-    travelBy      : new FormControl('')
+    travelBy      : new FormControl(''),
+    timeToTravel  : new FormControl('')
   });
+
+  useGPS: boolean = false;
+  isVisible: boolean = false;
 
   constructor(
     private saveService: SaveService,
@@ -31,13 +35,21 @@ export class HomeSettingsComponent implements OnInit {
     this.loadData();
   }
 
+  async changeGPSView(): Promise<void>{
+    this.useGPS = !this.useGPS;
+    await setTimeout(()=>{
+      this.isVisible = !this.isVisible;
+    }, 300);
+  }
+
   async loadData(): Promise<void>{    
     let savedObject: ISetting = await this.saveService.loadAll();
     this.settingsForm.setValue({
-      arrivalTime   : this.timeService.getCurrentTime(new Date),
+      arrivalTime   : this.timeService.convertToTimeString(new Date),
       timeToPrepare : savedObject.timeToPrepare || 0,
-      startLocation : savedObject.gps.start,
-      destination   : savedObject.gps.destination,
+      timeToTravel  : savedObject.timeToTravel || 0,
+      startLocation : savedObject.gps.start || '',
+      destination   : savedObject.gps.destination || '',
       travelBy      : savedObject.travelBy || 0
     })
 
@@ -45,7 +57,8 @@ export class HomeSettingsComponent implements OnInit {
 
   async onSubmit(): Promise<void>{
     let settingsObject: ISetting = await this.generateSettignsObject();
-    console.log(settingsObject);
+    this.timeService.calculateTime(settingsObject);
+    this.saveService.saveAll(settingsObject);
   }
 
   /**
@@ -59,6 +72,8 @@ export class HomeSettingsComponent implements OnInit {
     let object: ISetting = {
       arrivalTime: this.timeService.convertToDate(values.arrivalTime),
       timeToPrepare : values.timeToPrepare,
+      timeToTravel  : values.timeToTravel,
+      usesGPS       : this.useGPS,
       gps           : {
         start       : values.startLocation,
         destination : values.destination
@@ -67,6 +82,10 @@ export class HomeSettingsComponent implements OnInit {
     }
 
     return object;
+  }
+
+  openMaps(): void{
+    window.open("https://www.google.de/maps/dir///data=!4m2!4m1!3e3", "_blank");
   }
 
 }

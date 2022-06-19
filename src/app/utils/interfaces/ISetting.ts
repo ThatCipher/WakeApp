@@ -4,6 +4,8 @@ import { IGps } from "./IGps";
 export interface ISetting{
     arrivalTime     : any,
     timeToPrepare   : number,
+    timeToTravel    : number,
+    usesGPS         : boolean,
     gps             : IGps,
-    travelBy        : TravelMethods
+    travelBy        : TravelMethods,
 }
